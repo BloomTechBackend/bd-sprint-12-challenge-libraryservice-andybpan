@@ -165,17 +165,27 @@ public class LibraryServiceTest {
     @Test
     void save() {
         when(libraryRepository.findAll()).thenReturn(libraries);
-        libraryService.save(new Library("New Library"));
-        Mockito.verify(libraryRepository).save(any(Library.class));
+        Library library = new Library("New Library");
+        libraryService.save(library);
+        Mockito.verify(libraryRepository).save(library);
+
+        // libraryService.save(new Library("New Library"));
+        // Mockito.verify(libraryRepository).save(any(Library.class));
     }
 
     @Test
     void save_existingName_throwsResourceExistsException() {
         when(libraryRepository.findAll()).thenReturn(libraries);
+        Library library = new Library("Corte Madera Library");
         assertThrows(ResourceExistsException.class, ()->{
-            libraryService.save(new Library("Corte Madera Library"));
+            libraryService.save(library);
         });
-        verify(libraryRepository, never()).save(any(Library.class));
+        verify(libraryRepository, never()).save(library);
+
+//        assertThrows(ResourceExistsException.class, ()->{
+//            libraryService.save(new Library("Corte Madera Library"));
+//        });
+//        verify(libraryRepository, never()).save(any(Library.class));
     }
 
     @Test
